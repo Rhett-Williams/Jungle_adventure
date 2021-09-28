@@ -8,6 +8,42 @@ class Direction
     end
 end
 
+class Character
+    attr_accessor :name, :attack, :speech, :movement, :health
+    def initialize(name, attack, speech, movement, health)
+        @name = name
+        @attack = attack
+        @speech = speech
+        @movement = movement
+        @health = health
+    end
+end
+
+class Interactibles
+    attr_accessor :name, :attack, :speech, :movement, :intro
+    def initialize(name, attack, speech, movement, intro)
+        @name = name
+        @attack = attack
+        @speech = speech
+        @movement = movement
+        @intro = intro
+    end
+end
+
+p2 = "youve run into bees"
+p3 = "jaguar gotcha"
+p4 = "tribes try kill u"
+
+playercharacter = [
+    bill = Character.new("Bill", 5, 2, 3, 3), jill = Character.new("Jill", 3, 5, 2, 3), will = Character.new("Will", 2, 3, 5, 3)
+]
+
+$a_interactible = [
+    bees = Interactibles.new("Bees!", 4, 5, 2, p2), jaguar = Interactibles.new("Jaguar", 5, 2, 4, p3), tribesman = Interactibles.new("Tribesman", 4, 3, 4, p4)
+]
+
+$a_nuisance = ($a_interactible.sample)
+
 puts "Welcome to:\n░░░░░██╗██╗░░░██╗███╗░░██╗░██████╗░██╗░░░░░███████╗
 ░░░░░██║██║░░░██║████╗░██║██╔════╝░██║░░░░░██╔════╝
 ░░░░░██║██║░░░██║██╔██╗██║██║░░██╗░██║░░░░░█████╗░░
@@ -22,10 +58,22 @@ puts "Welcome to:\n░░░░░██╗██╗░░░██╗███�
 ██║░░██║██████╔╝░░╚██╔╝░░███████╗██║░╚███║░░░██║░░░╚██████╔╝██║░░██║███████╗
 ╚═╝░░╚═╝╚═════╝░░░░╚═╝░░░╚══════╝╚═╝░░╚══╝░░░╚═╝░░░░╚═════╝░╚═╝░░╚═╝╚══════╝"
 
-name = ""
-print "What is your name? "
-name = gets
-puts "\n#{name}, you find yourself trapped in a jungle with a bunch of crazy stuff going on. You must work your way through the map and attempt to find a helicopter."
+p "Press any character to continue"
+continue = gets
+
+puts "Choose your character:\n
+Bill           |    Jill           |    Will
+Attack:#{bill.attack}       |    Attack:#{jill.attack}       |    Attack:#{will.attack}
+Speech#{bill.speech}        |    Speech#{jill.speech}        |    Speech#{will.speech}
+Movement:#{bill.movement}     |    Movement:#{jill.movement}     |    Movement:#{will.movement}"
+
+playercharacters = gets.chomp()
+
+if playercharacters == "Bill"
+    playercharacter == playercharacter.first()
+end
+
+puts "\n#{playercharacter}, you wake up drunk in a jungle with a bunch of crazy stuff going on"
 
 p1 = "What direction do you travel in?\n(N)North\n(E)East\n(S)South\n(W)West"
 
@@ -75,6 +123,11 @@ def run_travel(directions)
     if direction.northsouth == 3 && direction.eastwest == 4
         puts "Congratulations! you've escaped"
     else
+        puts ($a_interactible.sample).intro
+        if answer == "A"
+            if ($a_interactible.sample).attack > 1
+            end
+        end
         run_travel(directions)
     end
 end
