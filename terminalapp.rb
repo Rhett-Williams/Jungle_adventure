@@ -1,10 +1,11 @@
 class Direction
-    attr_accessor :prompt, :answer, :northsouth, :eastwest
-    def initialize(prompt, answer, northsouth, eastwest)
+    attr_accessor :prompt, :answer, :answer2, :northsouth, :eastwest
+    def initialize(prompt, answer, answer2, northsouth, eastwest)
          @prompt = prompt
          @answer = answer
          @northsouth = northsouth
          @eastwest = eastwest
+         @answer2 = answer2
     end
 end
 
@@ -20,26 +21,36 @@ class Character
 end
 
 class Interactibles
-    attr_accessor :name, :attack, :speech, :movement, :intro
-    def initialize(name, attack, speech, movement, intro)
+    attr_accessor :name, :attack, :speech, :movement, :intro, :damage, :escape
+    def initialize(name, attack, speech, movement, intro, damage, escape)
         @name = name
         @attack = attack
         @speech = speech
         @movement = movement
         @intro = intro
+        @damage = damage
+        @escape = escape
     end
 end
 
-p2 = "youve run into bees"
-p3 = "jaguar gotcha"
-p4 = "tribes try kill u"
+p21 = "** youve run into bees **"
+p22 = "** the bess smacked ya **"
+p23 = "** you got away from the bees **"
+
+p31 = "** jaguar gotcha **"
+p32 = "** jaguar ate you **"
+p33 = "** slipped that kitty **"
+
+p41 = "** tribes try kill u **"
+p42 = "** tribes people spear you **"
+p43 = "** tribes people 2 slow 4 u **"
 
 playercharacter = [
-    bill = Character.new("Bill", 5, 2, 3, 3), jill = Character.new("Jill", 3, 5, 2, 3), will = Character.new("Will", 2, 3, 5, 3)
+    bill = Character.new("Bill", 4, 2, 3, 3), jill = Character.new("Jill", 3, 5, 2, 3), will = Character.new("Will", 2, 3, 5, 3)
 ]
 
 $a_interactible = [
-    bees = Interactibles.new("Bees!", 4, 5, 2, p2), jaguar = Interactibles.new("Jaguar", 5, 2, 4, p3), tribesman = Interactibles.new("Tribesman", 4, 3, 4, p4)
+    bees = Interactibles.new("Bees!", 4, 5, 2, p21, p22, p23), jaguar = Interactibles.new("Jaguar", 5, 2, 4, p31, p32, p33), tribesman = Interactibles.new("Tribesman", 4, 3, 4, p41, p42, p43)
 ]
 
 $a_nuisance = ($a_interactible.sample)
@@ -67,22 +78,29 @@ Attack:#{bill.attack}       |    Attack:#{jill.attack}       |    Attack:#{will.
 Speech#{bill.speech}        |    Speech#{jill.speech}        |    Speech#{will.speech}
 Movement:#{bill.movement}     |    Movement:#{jill.movement}     |    Movement:#{will.movement}"
 
-playercharacters = gets.chomp()
-
-if playercharacters == "Bill"
-    playercharacter == playercharacter.first()
+def character_select(playercharacter)
+    answer = gets.chomp()
+        if answer == "Bill" || "Jill" || "Will"
+            puts answer
+            $a_playerselected = playercharacter.first()
+        else
+            character_select(playercharacter)
+        end
 end
 
-puts "\n#{playercharacter}, you wake up drunk in a jungle with a bunch of crazy stuff going on"
+character_select(playercharacter)
+
+puts ", you wake up hungover in a jungle with a bunch of crazy stuff going on"
 
 p1 = "What direction do you travel in?\n(N)North\n(E)East\n(S)South\n(W)West"
 
 directions = [
-    Direction.new(p1, "N", 0, 0)
+    Direction.new(p1, "N", "A", 0, 0)
 ]
 
 def run_travel(directions)
     answer = ""
+    answer2 = ""
     for direction in directions
          puts direction.prompt
          answer = gets.chomp()
@@ -123,12 +141,21 @@ def run_travel(directions)
     if direction.northsouth == 3 && direction.eastwest == 4
         puts "Congratulations! you've escaped"
     else
-        puts ($a_interactible.sample).intro
-        if answer == "A"
-            if ($a_interactible.sample).attack > 1
+        puts "#{($a_interactible.sample).intro}\nPress A to attack\nPress S to speak\nPress R to run"
+        answer2 = gets.chomp()
+        if answer2 == "A"
+            if ($a_interactible.sample).attack > $a_playerselected.attack
+                $a_playerselected.health += -1
+                puts "#{($a_interactible.sample).damage} \nhealth: #{$a_playerselected.health}" 
+            else
+                puts ($a_interactible.sample).escape
             end
         end
-        run_travel(directions)
+        if $a_playerselected.health > 0
+            run_travel(directions)
+        else
+            puts "you died fool"
+        end
     end
 end
 
