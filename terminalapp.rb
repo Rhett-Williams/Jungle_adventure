@@ -21,8 +21,8 @@ class Character
 end
 
 class Interactibles
-    attr_accessor :name, :attack, :speech, :movement, :intro, :damage, :escape
-    def initialize(name, attack, speech, movement, intro, damage, escape)
+    attr_accessor :name, :attack, :speech, :movement, :intro, :damage, :escape, :talked, :hint, :ran, :slow
+    def initialize(name, attack, speech, movement, intro, damage, escape, talked, hint, ran, slow)
         @name = name
         @attack = attack
         @speech = speech
@@ -30,28 +30,48 @@ class Interactibles
         @intro = intro
         @damage = damage
         @escape = escape
+        @talked = talked
+        @hint = hint
+        @ran = ran
+        @slow = slow
     end
 end
 
-p21 = "** youve run into bees **"
-p22 = "** the bess smacked ya **"
-p23 = "** you got away from the bees **"
+p21 = "\n** You've run into BEES! **"
+p22 = "\n** The bees sting you real bad and you're all out of ointment **"
+p23 = "\n** You whip out your trusty Moretein can and kill all of the bees **"
+p24 = "\n** The bees know you aren't looking for a long term relationship. They drug you and send you back one position **"
+p25 = "\n** Holy shit you spoke to bees, they tell you the helicopter is located in the far north-east of the map, they also give you some honey wrapped loot **"
+p26 = "\n** You run away from the bees **"
+p27 = "\n** You try run but the bees catch you! You must face the Bees! **"
 
-p31 = "** jaguar gotcha **"
-p32 = "** jaguar ate you **"
-p33 = "** slipped that kitty **"
+p31 = "\n** A JAGUAR has walked accross your path! **"
+p32 = "\n** Jaguar bites you **"
+p33 = "\n** You whip out a shotgun and kill the jaguar **"
+p34 = "\n** The jungle cat has heard it all before. It chases you off its property. you get sent back one position"
+p35 = "\n** The jaguar purrs and somehow draws a map to the far North-East of the map and gives you some stuff from its jaguar pouch **"
+p36 = "\n** You start swinging through the trees like tarzan and escape the jaguar **"
+p37 = "\n** You are fast but the jaguar is faster. You must face the jaguar **"
 
-p41 = "** tribes try kill u **"
-p42 = "** tribes people spear you **"
-p43 = "** tribes people 2 slow 4 u **"
+p41 = "\n** A tribe of natives finds you **"
+p42 = "\n** The tribes people spear you **"
+p43 = "\n** You kill an entire tribe of natives, you feel good about yourself? **"
+p44 = "\n** The tribespeople understand you but think you sound like a nerd. They throw you into a nearby river and you get out one position back **"
+p45 = "\n** The tribes people have seen the helicopter and tell you it's in the North-East of the map"
+p46 = "\n** You ride away on a very fast scooter you find nearby"
+p47 = "\n** The tribes people run you down. You must face the tribespeople"
 
 playercharacter = [
     bill = Character.new("Bill", 4, 2, 3, 3), jill = Character.new("Jill", 3, 5, 2, 3), will = Character.new("Will", 2, 3, 5, 3)
 ]
 
 $a_interactible = [
-    bees = Interactibles.new("Bees!", 4, 5, 2, p21, p22, p23), jaguar = Interactibles.new("Jaguar", 5, 2, 4, p31, p32, p33), tribesman = Interactibles.new("Tribesman", 4, 3, 4, p41, p42, p43)
+    bees = Interactibles.new("Bees!", 4, 5, 2, p21, p22, p23, p24, p25, p26, p27), jaguar = Interactibles.new("Jaguar", 5, 2, 4, p31, p32, p33, p34, p35, p36, p37), tribesman = Interactibles.new("Tribesman", 4, 3, 4, p41, p42, p43, p44, p45, p46, p47)
 ]
+
+$a_bees = Interactibles.new("Bees!", 4, 5, 2, p21, p22, p23, p24, p25, p26, p27)
+$a_jaguar = Interactibles.new("Jaguar", 5, 2, 4, p31, p32, p33, p34, p35, p36, p37)
+$a_tribesman = Interactibles.new("Tribesman", 4, 3, 4, p41, p42, p43, p44, p45, p46, p47)
 
 $a_nuisance = ($a_interactible.sample)
 
@@ -69,7 +89,7 @@ puts "Welcome to:\n░░░░░██╗██╗░░░██╗███�
 ██║░░██║██████╔╝░░╚██╔╝░░███████╗██║░╚███║░░░██║░░░╚██████╔╝██║░░██║███████╗
 ╚═╝░░╚═╝╚═════╝░░░░╚═╝░░░╚══════╝╚═╝░░╚══╝░░░╚═╝░░░░╚═════╝░╚═╝░░╚═╝╚══════╝"
 
-p "Press any character to continue"
+p "Press ENTER to continue"
 continue = gets
 
 puts "Choose your character:\n
@@ -79,10 +99,13 @@ Speech#{bill.speech}        |    Speech#{jill.speech}        |    Speech#{will.s
 Movement:#{bill.movement}     |    Movement:#{jill.movement}     |    Movement:#{will.movement}"
 
 def character_select(playercharacter)
-    answer = gets.chomp()
-        if answer == "Bill" || "Jill" || "Will"
-            puts answer
-            $a_playerselected = playercharacter.first()
+    @answer = gets.chomp
+        if @answer == "Bill"
+            $a_playerselected = playercharacter.values_at(0)
+        elsif @answer == "Jill"
+            $a_playerselected = playercharacter.values_at(1)
+        elsif @answer == "Will"
+            $a_playerselected = playercharacter.values_at(2)
         else
             character_select(playercharacter)
         end
@@ -90,9 +113,9 @@ end
 
 character_select(playercharacter)
 
-puts ", you wake up hungover in a jungle with a bunch of crazy stuff going on"
+puts "\n#{@answer}, you wake up hungover in a jungle with a bunch of crazy stuff going on. The only thing you remember is helicoptering in. Your aim is to find where you parked it so you can escape. Use the present commands to navigate followed by ENTER.\n\n"
 
-p1 = "What direction do you travel in?\n(N)North\n(E)East\n(S)South\n(W)West"
+p1 = "What direction do you travel in?\nPress (N) for North\nPress (E) for East\nPress (S) for South\nPress (W) for West"
 
 directions = [
     Direction.new(p1, "N", "A", 0, 0)
@@ -101,24 +124,25 @@ directions = [
 def run_travel(directions)
     answer = ""
     answer2 = ""
+    gamin = []
     for direction in directions
          puts direction.prompt
          answer = gets.chomp()
          if answer == direction.answer
               direction.northsouth += 1
               direction.eastwest += 0
-         end
-         if answer == "S"
+         elsif answer == "S"
             direction.northsouth += -1
             direction.eastwest += 0
-         end
-         if answer == "W" 
+         elsif answer == "W" 
             direction.northsouth += 0
             direction.eastwest += -1
-         end
-         if answer == "E"
+         elsif answer == "E"
             direction.northsouth += 0
             direction.eastwest += 1
+         else
+            puts "that's not a direction?"
+            run_travel(directions)
          end
     end
     puts "position #{direction.northsouth}, #{direction.eastwest}"
@@ -141,16 +165,160 @@ def run_travel(directions)
     if direction.northsouth == 3 && direction.eastwest == 4
         puts "Congratulations! you've escaped"
     else
-        puts "#{($a_interactible.sample).intro}\nPress A to attack\nPress S to speak\nPress R to run"
-        answer2 = gets.chomp()
-        if answer2 == "A"
-            if ($a_interactible.sample).attack > $a_playerselected.attack
-                $a_playerselected.health += -1
-                puts "#{($a_interactible.sample).damage} \nhealth: #{$a_playerselected.health}" 
-            else
-                puts ($a_interactible.sample).escape
+        def fightsequence(gamin)
+            wheels = []
+            deals = []
+            steels = []
+            if "#{($a_interactible.sample).name}" == "Bees!"
+                def bees_fight(wheels)
+                    boi = []
+                    puts $a_bees.intro
+                    puts "Press (A) to Fight\nPress (S) to Flirt\nPress (D) to Flee"
+                    answer2 = gets.chomp()
+                    if answer2 == "A"
+                        if $a_bees.attack > $a_playerselected.attack
+                            puts $a_bees.damage
+                            $a_playerselected.health += -1
+                            puts "Health: #{$a_playerselected.health}"
+                        else
+                            puts $a_bees.escape
+                        end
+                    end
+                    if answer2 == "S"
+                        if $a_bees.speech > $a_playerselected.speech
+                            puts $a_bees.talked
+                            if @answer == "N"
+                                @@direction.northsouth += -1
+                            end
+                            if @answer == "W"
+                                @@direction.eastwest += 1
+                            end
+                            if @answer == "E"
+                                @@direction.eastwest += -1
+                            end
+                            if @answer == "S"
+                                @@direction.northsouth += 1
+                            end
+                        else
+                            $a_playerselected.speech += 1
+                            puts "#{$a_bees.hint}\nSpeech: #{$a_playerselected.speech}"
+                        end
+                    end
+                    if answer2 == "D"
+                        def movement_reset(boi)
+                            if $a_bees.movement > $a_playerselected.movement
+                                puts $a_bees.slow
+                                bees_fight(@wheels)
+                            else
+                                puts $a_bees.ran
+                            end
+                        end
+                        movement_reset(boi)
+                    end
+                end
+            bees_fight(wheels)
             end
+            if "#{($a_interactible.sample).name}" == "Jaguar"
+                def jaguar_fight(deals)
+                    boi = []
+                    puts $a_jaguar.intro
+                    puts "Press (A) to Fight\nPress (S) to Flirt\nPress (D) to Flee"
+                    answer2 = gets.chomp()
+                    if answer2 == "A"
+                        if $a_jaguar.attack > $a_playerselected.attack
+                            puts $a_jaguar.damage
+                            $a_playerselected.health += -1
+                            puts "Health: #{$a_playerselected.health}"
+                        else
+                            puts $a_jaguar.escape
+                        end
+                    end
+                    if answer2 == "S"
+                        if $a_jaguar.speech > $a_playerselected.speech
+                            puts $a_jaguar.talked
+                            if @answer == "N"
+                                @@direction.northsouth += -1
+                            end
+                            if @answer == "W"
+                                @@direction.eastwest += 1
+                            end
+                            if @answer == "E"
+                                @@direction.eastwest += -1
+                            end
+                            if @answer == "S"
+                                @@direction.northsouth += 1
+                            end
+                        else
+                            $a_playerselected.speech += 1
+                            puts "#{$a_jaguar.hint}\nSpeech: #{$a_playerselected.speech}"
+                        end
+                    end
+                    if answer2 == "D"
+                        def movement_reset1(boi)
+                            if $a_jaguar.movement > $a_playerselected.movement
+                                puts $a_jaguar.slow
+                                jaguar_fight(@deals)
+                            else
+                                puts $a_jaguar.ran
+                            end
+                        end
+                        movement_reset1(boi)
+                    end
+                end
+            jaguar_fight(deals)
+            end
+            if "#{($a_interactible.sample).name}" == "Tribesman"
+                def tribesman_fight(steels)
+                    boi = []
+                    puts $a_tribesman.intro
+                    puts "Press (A) to Fight\nPress (S) to Flirt\nPress (D) to Flee"
+                    answer2 = gets.chomp()
+                    if answer2 == "A"
+                        if $a_tribesman.attack > $a_playerselected.attack
+                            puts $a_tribesman.damage
+                            $a_playerselected.health += -1
+                            puts "Health: #{$a_playerselected.health}"
+                        else
+                            puts $a_tribesman.escape
+                        end
+                    end
+                    if answer2 == "S"
+                        if $a_tribesman.speech > $a_playerselected.speech
+                            puts $a_tribesman.talked
+                            if @answer == "N"
+                                @@direction.northsouth += -1
+                            end
+                            if @answer == "W"
+                                @@direction.eastwest += 1
+                            end
+                            if @answer == "E"
+                                @@direction.eastwest += -1
+                            end
+                            if @answer == "S"
+                                @@direction.northsouth += 1
+                            end
+                        else
+                            $a_playerselected.speech += 1
+                            puts "#{$a_tribesman.hint}\nSpeech: #{$a_playerselected.speech}"
+                        end
+                    end
+                    if answer2 == "D"
+                        def movement_reset2(boi)
+                            if $a_tribesman.movement > $a_playerselected.movement
+                                puts $a_tribesman.slow
+                                tribesman_fight(@steels)
+                            else
+                                puts $a_tribesman.ran
+                            end
+                        end
+                        movement_reset2(boi)
+                    end
+                end
+            tribesman_fight(steels)
+            end
+
         end
+        fightsequence(gamin)
         if $a_playerselected.health > 0
             run_travel(directions)
         else
