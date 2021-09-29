@@ -65,6 +65,10 @@ playercharacter = [
     bill = Character.new("Bill", 4, 2, 3, 3), jill = Character.new("Jill", 3, 5, 2, 3), will = Character.new("Will", 2, 3, 5, 3)
 ]
 
+$a_bill = Character.new("Bill", 4, 2, 3, 3)
+$a_jill = Character.new("Jill", 3, 4, 2, 3)
+$a_will = Character.new("Will", 2, 3, 4, 3)
+
 $a_interactible = [
     bees = Interactibles.new("Bees!", 4, 5, 2, p21, p22, p23, p24, p25, p26, p27), jaguar = Interactibles.new("Jaguar", 5, 2, 4, p31, p32, p33, p34, p35, p36, p37), tribesman = Interactibles.new("Tribesman", 4, 3, 4, p41, p42, p43, p44, p45, p46, p47)
 ]
@@ -75,19 +79,19 @@ $a_tribesman = Interactibles.new("Tribesman", 4, 3, 4, p41, p42, p43, p44, p45, 
 
 $a_nuisance = ($a_interactible.sample)
 
-puts "Welcome to:\n░░░░░██╗██╗░░░██╗███╗░░██╗░██████╗░██╗░░░░░███████╗
+puts "Welcome to:
+░░░░░██╗██╗░░░██╗███╗░░██╗░██████╗░██╗░░░░░███████╗
 ░░░░░██║██║░░░██║████╗░██║██╔════╝░██║░░░░░██╔════╝
 ░░░░░██║██║░░░██║██╔██╗██║██║░░██╗░██║░░░░░█████╗░░
 ██╗░░██║██║░░░██║██║╚████║██║░░╚██╗██║░░░░░██╔══╝░░
 ╚█████╔╝╚██████╔╝██║░╚███║╚██████╔╝███████╗███████╗
 ░╚════╝░░╚═════╝░╚═╝░░╚══╝░╚═════╝░╚══════╝╚══════╝
-
-░█████╗░██████╗░██╗░░░██╗███████╗███╗░░██╗████████╗██╗░░░██╗██████╗░███████╗
-██╔══██╗██╔══██╗██║░░░██║██╔════╝████╗░██║╚══██╔══╝██║░░░██║██╔══██╗██╔════╝
-███████║██║░░██║╚██╗░██╔╝█████╗░░██╔██╗██║░░░██║░░░██║░░░██║██████╔╝█████╗░░
-██╔══██║██║░░██║░╚████╔╝░██╔══╝░░██║╚████║░░░██║░░░██║░░░██║██╔══██╗██╔══╝░░
-██║░░██║██████╔╝░░╚██╔╝░░███████╗██║░╚███║░░░██║░░░╚██████╔╝██║░░██║███████╗
-╚═╝░░╚═╝╚═════╝░░░░╚═╝░░░╚══════╝╚═╝░░╚══╝░░░╚═╝░░░░╚═════╝░╚═╝░░╚═╝╚══════╝"
+░█████╗░██████╗░██╗░░░██╗███████╗███╗░░██╗████████╗██╗░░░██╗██████╗░███████╗██╗
+██╔══██╗██╔══██╗██║░░░██║██╔════╝████╗░██║╚══██╔══╝██║░░░██║██╔══██╗██╔════╝██║
+███████║██║░░██║╚██╗░██╔╝█████╗░░██╔██╗██║░░░██║░░░██║░░░██║██████╔╝█████╗░░██║
+██╔══██║██║░░██║░╚████╔╝░██╔══╝░░██║╚████║░░░██║░░░██║░░░██║██╔══██╗██╔══╝░░╚═╝
+██║░░██║██████╔╝░░╚██╔╝░░███████╗██║░╚███║░░░██║░░░╚██████╔╝██║░░██║███████╗██╗
+╚═╝░░╚═╝╚═════╝░░░░╚═╝░░░╚══════╝╚═╝░░╚══╝░░░╚═╝░░░░╚═════╝░╚═╝░░╚═╝╚══════╝╚═╝"
 
 p "Press ENTER to continue"
 continue = gets
@@ -101,11 +105,12 @@ Movement:#{bill.movement}     |    Movement:#{jill.movement}     |    Movement:#
 def character_select(playercharacter)
     @answer = gets.chomp
         if @answer == "Bill"
-            $a_playerselected = playercharacter.values_at(0)
+            $a_playerselected = $a_bill
+            puts $a_playerselected.name
         elsif @answer == "Jill"
-            $a_playerselected = playercharacter.values_at(1)
+            $a_playerselected = $a_jill
         elsif @answer == "Will"
-            $a_playerselected = playercharacter.values_at(2)
+            $a_playerselected = $a_will
         else
             character_select(playercharacter)
         end
@@ -115,7 +120,7 @@ character_select(playercharacter)
 
 puts "\n#{@answer}, you wake up hungover in a jungle with a bunch of crazy stuff going on. The only thing you remember is helicoptering in. Your aim is to find where you parked it so you can escape. Use the present commands to navigate followed by ENTER.\n\n"
 
-p1 = "What direction do you travel in?\nPress (N) for North\nPress (E) for East\nPress (S) for South\nPress (W) for West"
+p1 = "\nWhat direction do you travel in?\nPress (N) for North\nPress (E) for East\nPress (S) for South\nPress (W) for West"
 
 directions = [
     Direction.new(p1, "N", "A", 0, 0)
@@ -141,7 +146,7 @@ def run_travel(directions)
             direction.northsouth += 0
             direction.eastwest += 1
          else
-            puts "that's not a direction?"
+            puts "that's not a direction?\n\n"
             run_travel(directions)
          end
     end
@@ -322,7 +327,7 @@ def run_travel(directions)
         if $a_playerselected.health > 0
             run_travel(directions)
         else
-            puts "you died fool"
+            puts "Between the bees and the hangover, it is all too much to go on. See you in the next playthrough #{$a_playerselected.name}"
         end
     end
 end
